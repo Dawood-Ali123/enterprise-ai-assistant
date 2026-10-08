@@ -1,0 +1,8 @@
+define bot refuse to respond
+  "I'm sorry, I can't process that request because it violates the assistant's usage policy."
+
+define flow check enterprise input
+  $result = execute check_enterprise_input
+  if $result.is_blocked
+    bot refuse to respond
+    stop

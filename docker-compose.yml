@@ -1,0 +1,56 @@
+services:
+
+  database:
+    image: pgvector/pgvector:pg16
+    container_name: enterprise_ai_database
+
+    environment:
+      POSTGRES_DB: company_ai
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+
+    restart: unless-stopped
+
+
+  backend:
+    build: ./backend
+    container_name: enterprise_ai_backend
+
+    env_file:
+      - .env
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./data/uploads:/app/uploads
+      - ./hf_cache:/root/.cache/huggingface
+
+    depends_on:
+      - database
+
+    restart: unless-stopped
+
+
+  frontend:
+    build: ./frontend
+    container_name: enterprise_ai_frontend
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+
+volumes:
+  postgres_data:

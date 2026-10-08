@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+psycopg[binary]
+pypdf
+python-multipart
+pydantic
+langchain-text-splitters
+sentence-transformers
+langchain-huggingface
+langchain-groq
+nemoguardrails
+logfire[fastapi]
+PyMuPDF
+pytesseract
